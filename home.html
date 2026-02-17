@@ -329,6 +329,54 @@
   </div>
 </div>
 
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-about-full">
+      <h3>About ProStudent</h3>
+      <p>
+        Pro Student is your all-in-one academic companion designed to support students in their learning journey. From organized notes and previous year question papers to helpful study resources, we make it easier for you to stay prepared and track your progress. Learn smarter, stay consistent, and achieve your goals with Pro Student.
+      </p>
+    </div>
+
+    <div class="footer-team-row">
+      <h3>Developed By</h3>
+
+      <div class="team-grid">
+        <div class="team-member">
+          <h4>Mukund Keshwani</h4>
+          <p>Email: mukund.haresh@bcah.christuniversity.in</p>
+          <p>Contact: +91 9359888264</p>
+          <a href="https://www.linkedin.com/in/mukund-keshwani-315148378/" target="_blank">LinkedIn</a>
+        </div>
+
+        <div class="team-member">
+          <h4>Simran Singh</h4>
+          <p>Email: simran.singh@bcah.christuniversity.in</p>
+          <p>Contact: +91 9798380631</p>
+          <a href="https://www.linkedin.com/in/simran-singh-ab9524350/" target="_blank">LinkedIn</a>
+        </div>
+
+        <div class="team-member">
+          <h4>Piyush Sinha</h4>
+          <p>Email: piyush.sinha@bcah.christuniversity.in</p>
+          <p>Contact: +91 7759040065</p>
+          <a href="https://www.linkedin.com/in/piyush-sinha-91702a378/" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+      <br />
+      <h3>About Us</h3>
+      <p>
+        We are The Closing Tags, a team of first-year BCA students from Christ University who are passionate about learning and building through real-world experiences. We actively participate in hackathons and tech events to apply our classroom knowledge to practical problems, improve our skills, and work collaboratively under real constraints. Our focus is on creating clean, user-friendly, and meaningful solutions while continuously growing as developers through hands-on projects and innovation-driven learning.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Navio. All rights reserved.</p>
+  </div>
+</footer>
+
 <style>
 #chat-toggle{
   position:fixed;
@@ -426,6 +474,86 @@
 
 #close-chat:hover {
   transform: scale(1.2);
+}
+
+/* FOOTER STYLES */
+.site-footer {
+  margin-top: 60px;
+  padding: 50px 40px 20px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  color: #222;
+}
+
+.footer-about-full {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.footer-about-full p {
+  width: 100%;
+  max-width: 1100px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.footer-team-row h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.team-member {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.team-member h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.team-member p {
+  font-size: 13px;
+  margin: 4px 0;
+  color: #444;
+}
+
+.team-member a {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b4eff;
+  text-decoration: none;
+}
+
+.team-member a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 15px;
+  font-size: 13px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: #444;
+}
+
+@media (max-width: 900px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 
