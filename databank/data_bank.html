@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Data Bank — Previous Year Question Papers</title>
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --accent: #3b82f6;
+        --muted: #6b7280;
+      }
+      * {
+        box-sizing: border-box;
+        font-family:
+          Inter,
+          system-ui,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+      }
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+        color: #0f172a;
+      }
+      .container {
+        max-width: 980px;
+        margin: 40px auto;
+        padding: 28px;
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .logo {
+        width: 68px;
+        height: 68px;
+        background: linear-gradient(135deg, var(--accent), #06b6d4);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+      }
+      h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+      p.lead {
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+      .card {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 18px;
+        margin-top: 18px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      }
+      .filters {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+      select,
+      button {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6e9ef;
+        background: white;
+      }
+      select:disabled {
+        opacity: 0.6;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 12px;
+      }
+      button.primary {
+        background: var(--accent);
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #fff;
+        border: 1px solid #e6e9ef;
+      }
+      .results {
+        margin-top: 18px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      /* Table styles for results */
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 6px;
+      }
+      .table th {
+        text-align: left;
+        padding: 10px;
+        background: #f8fafc;
+        font-size: 13px;
+        color: var(--muted);
+        border-bottom: 1px solid #eef2f6;
+      }
+      .table td {
+        padding: 10px;
+        border-top: 1px solid #f1f5f9;
+        font-size: 14px;
+      }
+      .download-link {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .paper {
+        padding: 12px;
+        border-radius: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(59, 130, 246, 0.04),
+          rgba(6, 182, 212, 0.02)
+        );
+        border: 1px solid rgba(59, 130, 246, 0.06);
+      }
+      .paper h4 {
+        margin: 0 0 6px;
+        font-size: 15px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .empty {
+        padding: 28px;
+        text-align: center;
+        color: var(--muted);
+      }
+      @media (max-width: 880px) {
+        .filters {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero">
+        <div class="logo">DB</div>
+        <div>
+          <h1>Student Data Bank</h1>
+          <p class="lead">
+            Filter and find previous-year question papers by programme, course,
+            year and subject.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight: 600; margin-bottom: 8px">Search Filters</div>
+        <div class="filters">
+          <div>
+            <label class="muted">Programme</label>
+            <select id="programmeSelect">
+              <option value="">Select programme</option>
+            </select>
+          </div>
+          <div>
+            <label class="muted">Course</label>
+            <select id="courseSelect" disabled>
+              <option value="">Select course</option>
+            </select>
+          </div>
+          <div>
+            <label class="muted">Year</label>
+            <select id="yearSelect" disabled>
+              <option value="">Select year</option>
+            </select>
+          </div>
+          <div>
+            <label class="muted">Subject</label>
+            <select id="subjectSelect" disabled>
+              <option value="">Select subject</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="searchBtn" class="primary">Search</button>
+          <button id="clearBtn" class="secondary">Clear</button>
+          <div style="margin-left: auto; color: var(--muted); font-size: 13px">
+            Results will load below
+          </div>
+        </div>
+
+        <div id="results" class="results"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      // Data model for dependent dropdowns
+      const data = {
+        "Under Graduate": {
+          courses: ["BCA"],
+          years: { BCA: ["1"] },
+          subjects: { BCA: ["Maths", "Data Structures", "Operating Systems"] },
+        },
+        "Post Graduate": {
+          courses: ["MCA"],
+          years: { MCA: ["1"] },
+          subjects: { MCA: ["Java", "Python", "Computer Networks"] },
+        },
+      };
+
+      const programmeSelect = document.getElementById("programmeSelect");
+      const courseSelect = document.getElementById("courseSelect");
+      const yearSelect = document.getElementById("yearSelect");
+      const subjectSelect = document.getElementById("subjectSelect");
+      const searchBtn = document.getElementById("searchBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const results = document.getElementById("results");
+
+      // Populate programmes
+      Object.keys(data).forEach((p) => {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p;
+        programmeSelect.appendChild(opt);
+      });
+
+      programmeSelect.addEventListener("change", () => {
+        resetSelect(courseSelect);
+        resetSelect(yearSelect);
+        resetSelect(subjectSelect);
+        const p = programmeSelect.value;
+        if (!p) return;
+        const courses = data[p].courses || [];
+        courses.forEach((c) => {
+          const o = document.createElement("option");
+          o.value = c;
+          o.textContent = c;
+          courseSelect.appendChild(o);
+        });
+        courseSelect.disabled = false;
+      });
+
+      courseSelect.addEventListener("change", () => {
+        resetSelect(yearSelect);
+        resetSelect(subjectSelect);
+        const p = programmeSelect.value;
+        const c = courseSelect.value;
+        if (!c) return;
+        const years = (data[p].years && data[p].years[c]) || [];
+        years.forEach((y) => {
+          const o = document.createElement("option");
+          o.value = y;
+          o.textContent = y;
+          yearSelect.appendChild(o);
+        });
+        yearSelect.disabled = false;
+
+        const subjects = (data[p].subjects && data[p].subjects[c]) || [];
+        subjects.forEach((s) => {
+          const o = document.createElement("option");
+          o.value = s;
+          o.textContent = s;
+          subjectSelect.appendChild(o);
+        });
+        subjectSelect.disabled = false;
+      });
+
+      clearBtn.addEventListener("click", () => {
+        programmeSelect.value = "";
+        resetSelect(courseSelect);
+        resetSelect(yearSelect);
+        resetSelect(subjectSelect);
+        results.innerHTML = "";
+      });
+
+      function resetSelect(sel) {
+        sel.innerHTML = '<option value="">Select</option>';
+        sel.disabled = true;
+      }
+
+      // Firebase: replace the placeholder with your Firebase app config
+      const firebaseConfig = {
+        apiKey: "AIzaSyDcuS31iS94CH1y1YKdxkbKR-AFArRLbZ0",
+        authDomain: "mukund-73c38.firebaseapp.com",
+        projectId: "mukund-73c38",
+        storageBucket: "mukund-73c38.firebasestorage.app",
+        messagingSenderId: "601138738807",
+        appId: "1:601138738807:web:4c185e8250cce8f647b872",
+      };
+
+      // Dynamically import Firebase only when Search is used
+      async function initFirebase() {
+        if (window._db) return window._db;
+        try {
+          const [
+            { initializeApp },
+            { getFirestore, collection, query, where, getDocs },
+          ] = await Promise.all([
+            import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"),
+            import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"),
+          ]);
+          if (!firebaseConfig || !firebaseConfig.projectId) {
+            throw new Error(
+              "Firebase config not set. Paste your firebaseConfig in the script.",
+            );
+          }
+          const app = initializeApp(firebaseConfig);
+          const db = getFirestore(app);
+          window._db = { db, collection, query, where, getDocs };
+          return window._db;
+        } catch (err) {
+          throw err;
+        }
+      }
+
+      // Search handler: queries Firestore collection `questionPapers`
+      searchBtn.addEventListener("click", async () => {
+        results.innerHTML = '<div class="empty">Loading results…</div>';
+        const programme = programmeSelect.value;
+        const course = courseSelect.value;
+        const year = yearSelect.value;
+        const subject = subjectSelect.value;
+        if (!programme || !course || !year || !subject) {
+          results.innerHTML =
+            '<div class="empty">Please select all filters to search.</div>';
+          return;
+        }
+
+        try {
+          const fb = await initFirebase();
+          const papersCol = fb.collection(fb.db, "questionPapers");
+          let q = fb.query(
+            papersCol,
+            fb.where("programme", "==", programme),
+            fb.where("course", "==", course),
+            fb.where("year", "==", year),
+            fb.where("subject", "==", subject),
+          );
+          const snap = await fb.getDocs(q);
+          if (snap.empty) {
+            results.innerHTML =
+              '<div class="empty">No papers found for selected filters.</div>';
+            return;
+          }
+          // Build table showing only documents that have a fileURL (uploaded files)
+          const rows = [];
+          snap.forEach((doc) => {
+            const d = doc.data();
+            if (d && d.fileURL) rows.push(d);
+          });
+          if (rows.length === 0) {
+            results.innerHTML =
+              '<div class="empty">No uploaded papers found for selected filters.</div>';
+            return;
+          }
+
+          const table = document.createElement("table");
+          table.className = "table";
+          const thead = document.createElement("thead");
+          const headRow = document.createElement("tr");
+          ["Subject Code", "Subject Name", "Exam Name", "Download"].forEach(
+            (h) => {
+              const th = document.createElement("th");
+              th.textContent = h;
+              headRow.appendChild(th);
+            },
+          );
+          thead.appendChild(headRow);
+          table.appendChild(thead);
+          const tbody = document.createElement("tbody");
+          rows.forEach((d) => {
+            const tr = document.createElement("tr");
+            const code = document.createElement("td");
+            code.textContent = d.subjectCode || d.code || "";
+            const name = document.createElement("td");
+            name.textContent = d.subjectName || d.title || d.subject || "";
+            const exam = document.createElement("td");
+            exam.textContent = d.examName || d.exam || d.exam_name || "";
+            const down = document.createElement("td");
+            if (d.fileURL) {
+              const a = document.createElement("a");
+              a.href = d.fileURL;
+              a.target = "_blank";
+              a.rel = "noopener";
+              a.className = "download-link";
+              a.textContent = "Download";
+              down.appendChild(a);
+            } else {
+              down.textContent = "-";
+            }
+            tr.appendChild(code);
+            tr.appendChild(name);
+            tr.appendChild(exam);
+            tr.appendChild(down);
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          results.innerHTML = "";
+          results.appendChild(table);
+        } catch (err) {
+          results.innerHTML = `<div class="empty">Error: ${err.message}. Ensure Firebase config and Firestore collection exist.</div>`;
+        }
+      });
+    </script>
+  </body>
+</html>

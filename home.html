@@ -30,12 +30,18 @@
       const auth = getAuth(app);
       const db = getFirestore(app);
 
+      // Store user course globally for card navigation
+      window.userCourse = null;
+
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           const docSnap = await getDoc(doc(db, "users", user.uid));
 
           if (docSnap.exists()) {
             const data = docSnap.data();
+
+            // Store course globally
+            window.userCourse = (data.course || "").toUpperCase();
 
             // Basic Info
             document.getElementById("userName").innerText = data.name;
@@ -65,6 +71,16 @@
           window.location.href = "login/login.html";
         }
       });
+
+      // Navigate to course-specific subjects page
+      window.goToSubjects = function () {
+        if (!window.userCourse) {
+          alert("Loading course information...");
+          return;
+        }
+        const courseFile = window.userCourse === "MCA" ? "mca.html" : "bca.html";
+        window.location.href = "subjects/" + courseFile;
+      };
 
       window.logoutUser = function () {
         signOut(auth).then(() => {
@@ -255,22 +271,38 @@
         </div>
 
         <div class="card-grid">
-          <div class="card">
+          <div
+            class="card"
+            onclick="goToSubjects()"
+            style="cursor: pointer"
+          >
             <div class="card-img">Add image link</div>
-            <div class="card-footer">Study material (add details later)</div>
+            <div class="card-footer">Study Material</div>
           </div>
 
-          <div class="card">
+          <div
+            class="card"
+            onclick="window.location.href = 'databank/data_bank.html'"
+            style="cursor: pointer"
+          >
             <div class="card-img">Add image link</div>
-            <div class="card-footer">Study material (add details later)</div>
+            <div class="card-footer">Data Bank</div>
           </div>
 
-          <div class="card">
+          <div
+            class="card"
+            onclick="window.location.href = 'connect/data_bank_form.html'"
+            style="cursor: pointer"
+          >
             <div class="card-img">Add image link</div>
-            <div class="card-footer">Study material (add details later)</div>
+            <div class="card-footer">Connect</div>
           </div>
 
-          <div class="card">
+          <div
+            class="card"
+            onclick="window.location.href = 'databankdata_bank.html'"
+            style="cursor: pointer"
+          >
             <div class="card-img">Add image link</div>
             <div class="card-footer">Study material (add details later)</div>
           </div>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Upload — Question Paper</title>
+
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --accent: #3b82f6;
+        --muted: #6b7280;
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family:
+          Inter,
+          system-ui,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 600px;
+        background: var(--card);
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      }
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 18px;
+      }
+
+      label {
+        font-size: 13px;
+        color: var(--muted);
+        display: block;
+        margin-top: 14px;
+        margin-bottom: 4px;
+      }
+
+      select,
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6e9ef;
+      }
+
+      button {
+        margin-top: 18px;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        border: none;
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .status {
+        margin-top: 14px;
+        font-size: 14px;
+      }
+
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h2>Upload Question Paper</h2>
+
+      <label>Programme</label>
+      <select id="programme">
+        <option value="">Select programme</option>
+        <option value="Under Graduate">Under Graduate</option>
+        <option value="Post Graduate">Post Graduate</option>
+      </select>
+
+      <label>Course</label>
+      <select id="course" disabled>
+        <option value="">Select course</option>
+      </select>
+
+      <label>Year</label>
+      <select id="year" disabled>
+        <option value="">Select year</option>
+      </select>
+
+      <label>Subject</label>
+      <select id="subject" disabled>
+        <option value="">Select subject</option>
+      </select>
+
+      <label>Title</label>
+      <input type="text" id="title" placeholder="Enter paper title" />
+
+      <label>PDF URL</label>
+      <input type="text" id="fileURL" placeholder="Paste Google Drive link" />
+
+      <button id="submitBtn">Submit</button>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <script type="module">
+      // 🔥 FIREBASE IMPORTS
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+      } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+      // 🔥 PASTE YOUR FIREBASE CONFIG HERE
+      const firebaseConfig = {
+        apiKey: "AIzaSyDcuS31iS94CH1y1YKdxkbKR-AFArRLbZ0",
+        authDomain: "mukund-73c38.firebaseapp.com",
+        projectId: "mukund-73c38",
+        storageBucket: "mukund-73c38.firebasestorage.app",
+        messagingSenderId: "601138738807",
+        appId: "1:601138738807:web:4c185e8250cce8f647b872",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Dropdown Data Model
+      const data = {
+        "Under Graduate": {
+          courses: ["BCA"],
+          years: { BCA: ["1"] },
+          subjects: { BCA: ["Maths", "Data Structures", "Operating Systems"] },
+        },
+        "Post Graduate": {
+          courses: ["MCA"],
+          years: { MCA: ["1"] },
+          subjects: { MCA: ["Java", "Python", "Computer Networks"] },
+        },
+      };
+
+      const programme = document.getElementById("programme");
+      const course = document.getElementById("course");
+      const year = document.getElementById("year");
+      const subject = document.getElementById("subject");
+      const submitBtn = document.getElementById("submitBtn");
+      const status = document.getElementById("status");
+
+      programme.addEventListener("change", () => {
+        resetSelect(course);
+        resetSelect(year);
+        resetSelect(subject);
+
+        const selected = programme.value;
+        if (!selected) return;
+
+        data[selected].courses.forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c;
+          opt.textContent = c;
+          course.appendChild(opt);
+        });
+
+        course.disabled = false;
+      });
+
+      course.addEventListener("change", () => {
+        resetSelect(year);
+        resetSelect(subject);
+
+        const p = programme.value;
+        const c = course.value;
+        if (!c) return;
+
+        data[p].years[c].forEach((y) => {
+          const opt = document.createElement("option");
+          opt.value = y;
+          opt.textContent = y;
+          year.appendChild(opt);
+        });
+
+        data[p].subjects[c].forEach((s) => {
+          const opt = document.createElement("option");
+          opt.value = s;
+          opt.textContent = s;
+          subject.appendChild(opt);
+        });
+
+        year.disabled = false;
+        subject.disabled = false;
+      });
+
+      function resetSelect(sel) {
+        sel.innerHTML = '<option value="">Select</option>';
+        sel.disabled = true;
+      }
+
+      // 🔥 SUBMIT LOGIC
+      submitBtn.addEventListener("click", async () => {
+        const p = programme.value;
+        const c = course.value;
+        const y = year.value;
+        const s = subject.value;
+        const title = document.getElementById("title").value;
+        const fileURL = document.getElementById("fileURL").value;
+
+        if (!p || !c || !y || !s || !title || !fileURL) {
+          status.textContent = "Please fill all fields.";
+          status.className = "status error";
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, "questionPapers"), {
+            programme: p,
+            course: c,
+            year: y,
+            subject: s,
+            title: title,
+            fileURL: fileURL,
+          });
+
+          status.textContent = "Paper uploaded successfully!";
+          status.className = "status success";
+        } catch (error) {
+          status.textContent = "Error: " + error.message;
+          status.className = "status error";
+        }
+      });
+    </script>
+  </body>
+</html>
