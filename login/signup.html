@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Signup</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Signup</h2>
+
+      <!-- SLIDER -->
+      <div class="switch">
+        <div class="slider" id="slider"></div>
+        <span class="teacher-label" onclick="setRole('teacher')">Teacher</span>
+        <span class="student-label" onclick="setRole('student')">Student</span>
+      </div>
+
+      <input id="name" placeholder="Name" />
+      <input id="phone" placeholder="Phone" />
+      <input id="email" placeholder="Email" />
+
+      <!-- COURSE DROPDOWN -->
+      <select id="course" style="display: none">
+        <option value="">Select Course</option>
+        <option value="BCA">BCA</option>
+        <option value="MCA">MCA</option>
+      </select>
+
+      <input id="uniqueId" placeholder="Enter Teacher ID" />
+      <input type="password" id="password" placeholder="Password" />
+
+      <button id="createBtn">Create Account</button>
+
+      <p id="msg"></p>
+
+      <a href="login.html">Login</a>
+    </div>
+
+    <!-- 🔥 EMAILJS LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+    <!-- 🔥 YOUR PUBLIC KEY -->
+    <script>
+      (function () {
+        emailjs.init("qODljvd6ByqucgzPM");
+      })();
+    </script>
+
+    <!-- signup script -->
+    <script type="module" src="signup.js"></script>
+  </body>
+</html>

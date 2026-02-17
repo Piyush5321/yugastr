@@ -1,0 +1,101 @@
+body{
+  font-family: Arial;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.container{
+  background:#111827;
+  padding:30px;
+  border-radius:12px;
+  width:320px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:6px;
+  border:none;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:#06b6d4;
+  border:none;
+  margin-top:10px;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* TOGGLE */
+.switch {
+  position: relative;
+  width: 200px;
+  height: 40px;
+  background: #1f2937;
+  border-radius: 30px;
+  margin: 10px auto;
+}
+
+.slider {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  background: #06b6d4;
+  border-radius: 30px;
+  transition: 0.3s;
+  left: 0;
+}
+
+.switch span{
+  position:absolute;
+  width:50%;
+  text-align:center;
+  line-height:40px;
+  cursor:pointer;
+}
+
+.teacher-label{ left:0; }
+.student-label{ right:0; }
+
+#msg{
+  margin-top:10px;
+  text-align:center;
+}
+
+/* DROPDOWN STYLE */
+select{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:6px;
+  border:none;
+  background:#1f2937;
+  color:white;
+  font-size:14px;
+  outline:none;
+  transition:0.2s;
+}
+
+select:focus{
+  border:2px solid #06b6d4;
+}
+
+option{
+  background:#111827;
+  color:white;
+}
+
+/* ERROR + SUCCESS TEXT */
+#msg{
+  margin-top:10px;
+  text-align:center;
+  font-weight:bold;
+}

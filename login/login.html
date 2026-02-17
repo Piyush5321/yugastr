@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login</h2>
+
+      <div class="switch">
+        <div class="slider" id="slider"></div>
+        <span class="teacher-label" onclick="setRole('teacher')">Teacher</span>
+        <span class="student-label" onclick="setRole('student')">Student</span>
+      </div>
+
+      <input id="loginId" placeholder="Enter Teacher ID" />
+      <input type="password" id="password" placeholder="Password" />
+
+      <button id="loginBtn">Login</button>
+
+      <p id="msg"></p>
+
+      <a href="signup.html">Create account</a>
+    </div>
+
+    <!-- EmailJS library -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+    <!-- PUT YOUR PUBLIC KEY HERE -->
+    <script>
+      (function () {
+        emailjs.init("qODljvd6ByqucgzPM");
+      })();
+    </script>
+
+    <!-- your login script -->
+    <script type="module" src="login.js"></script>
+  </body>
+</html>
