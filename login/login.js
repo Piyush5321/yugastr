@@ -55,6 +55,11 @@ document.getElementById("loginBtn").addEventListener("click", async ()=>{
       action: "Login completed"
     });
 
+    /* 🔥 REDIRECT TO HOME PAGE */
+    setTimeout(() => {
+      window.location.href = "../home.html";
+    }, 1000);
+
   }catch(err){
     document.getElementById("msg").innerText="Wrong password or role";
     document.getElementById("msg").style.color="red";
