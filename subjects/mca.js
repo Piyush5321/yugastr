@@ -518,6 +518,12 @@ function handleAction(e) {
         arr[index] = quizState.score;
         localStorage.setItem(key, JSON.stringify(arr));
 
+        saveResult(
+          quizState.score,
+          total,
+          currentSubject,
+          currentUnit
+        );
 
       }
       refreshQuiz();
@@ -683,6 +689,30 @@ document.addEventListener("click", e => {
   }
 
 });
+
+async function saveResult(score, total, subject, unit) {
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Login first");
+    return;
+  }
+
+  const id = Date.now().toString();
+
+  await setDoc(doc(db, "results", id), {
+    email: user.email,
+    uid: user.uid,
+    score: score,
+    total: total,
+    subject: subject,
+    unit: unit,
+    time: new Date().toLocaleString()
+  });
+
+  alert("Result saved!");
+}
 
 async function loadReviews() {
 
