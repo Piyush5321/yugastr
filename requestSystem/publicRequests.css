@@ -1,0 +1,30 @@
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+}
+
+.title{
+  text-align:center;
+}
+
+.card{
+  background:#1f2937;
+  margin:10px auto;
+  padding:15px;
+  width:350px;
+  border-left:8px solid red;
+  border-radius:6px;
+}
+
+.done{
+  border-left:8px solid limegreen;
+}
+
+button{
+  margin-top:8px;
+  padding:6px 12px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}

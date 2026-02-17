@@ -1,0 +1,37 @@
+body{
+  background:#0f172a;
+  font-family:Arial;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  background:#111827;
+  padding:25px;
+  border-radius:10px;
+  width:320px;
+}
+
+input,textarea{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:none;
+  border-radius:6px;
+  background:#1f2937;
+  color:white;
+}
+
+textarea{ height:100px; }
+
+button{
+  width:100%;
+  padding:10px;
+  background:#06b6d4;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
