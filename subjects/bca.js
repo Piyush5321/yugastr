@@ -164,15 +164,7 @@ function renderSubjectScreen() {
   });
 
   return `
-      <header class="header">
-        <div class="header-inner">
-          <div class="header-icon">S</div>
-          <div class="header-text">
-            <h1>StudyHub</h1>
-            <p>Your academic learning companion</p>
-          </div>
-        </div>
-      </header>
+      
       <div class="main">
         <h2 class="section-title">Choose a subject to begin</h2>
         <p class="section-subtitle">Each subject contains study notes and interactive quizzes across 3 units.</p>
@@ -680,9 +672,27 @@ async function saveResult(score, total, subject, unit) {
 
 // ==================== INIT ====================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", ()=>{
+
   render();
-  setTimeout(renderCharts, 200);
+  setTimeout(renderCharts,200);
+
+  // NAVBAR LOGOUT CODE
+  import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+  .then(({getAuth, signOut})=>{
+      
+      const auth = getAuth();
+      
+      document.addEventListener("click",(e)=>{
+          if(e.target.id==="logoutBtn"){
+              signOut(auth).then(()=>{
+                  window.location.href="login.html";
+              });
+          }
+      });
+
+  });
+
 });
 
 async function loadReviews() {
