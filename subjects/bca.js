@@ -672,26 +672,26 @@ async function saveResult(score, total, subject, unit) {
 
 // ==================== INIT ====================
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
 
   render();
-  setTimeout(renderCharts,200);
+  setTimeout(renderCharts, 200);
 
   // NAVBAR LOGOUT CODE
   import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
-  .then(({getAuth, signOut})=>{
-      
+    .then(({ getAuth, signOut }) => {
+
       const auth = getAuth();
-      
-      document.addEventListener("click",(e)=>{
-          if(e.target.id==="logoutBtn"){
-              signOut(auth).then(()=>{
-                  window.location.href="login.html";
-              });
-          }
+
+      document.addEventListener("click", (e) => {
+        if (e.target.id === "logoutBtn") {
+          signOut(auth).then(() => {
+            window.location.href = "login.html";
+          });
+        }
       });
 
-  });
+    });
 
 });
 
@@ -730,3 +730,24 @@ async function loadReviews() {
   });
 }
 
+
+
+// ==================== THEME TOGGLE ====================
+window.toggleTheme = function () {
+  const body = document.body;
+  const isDark = body.classList.toggle("dark-theme");
+  const icon = document.getElementById("themeIcon");
+  icon.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+};
+
+// Load theme on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-theme");
+    if (document.getElementById("themeIcon")) {
+      document.getElementById("themeIcon").textContent = "☀️";
+    }
+  }
+});

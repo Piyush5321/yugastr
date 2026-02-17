@@ -3,18 +3,89 @@
   <head>
     <title>Login</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .role-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        gap: 15px;
+      }
+
+      .toggle-label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 14px;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 70px;
+        height: 34px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #4e73df;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(36px);
+      }
+
+      .role-text {
+        font-weight: 600;
+        color: #2c3e50;
+        min-width: 80px;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
       <h2>Login</h2>
 
-      <div class="switch">
-        <div class="slider" id="slider"></div>
-        <span class="teacher-label" onclick="setRole('teacher')">Teacher</span>
-        <span class="student-label" onclick="setRole('student')">Student</span>
+      <!-- ROLE TOGGLE -->
+      <div class="role-toggle">
+        <span class="toggle-label">Student</span>
+        <label class="switch">
+          <input type="checkbox" id="roleToggle" onchange="toggleRole()">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label">Teacher</span>
       </div>
 
-      <input id="loginId" placeholder="Enter Teacher ID" />
+      <input id="loginId" placeholder="Enter Student ID" />
       <input type="password" id="password" placeholder="Password" />
 
       <button id="loginBtn">Login</button>
@@ -35,7 +106,83 @@
       })();
     </script>
 
-    <!-- your login script -->
-    <script type="module" src="login.js"></script>
+    <!-- Firebase and login script -->
+    <script type="module">
+      import { auth, db } from "./firebase.js";
+      import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import {
+        collection,
+        query,
+        where,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      let role = "student";
+
+      window.toggleRole = () => {
+        const toggle = document.getElementById("roleToggle");
+        role = toggle.checked ? "teacher" : "student";
+        const field = document.getElementById("loginId");
+        field.placeholder = role === "student" ? "Enter Student ID" : "Enter Teacher ID";
+      };
+
+      document.getElementById("loginBtn").addEventListener("click", async () => {
+        const id = document.getElementById("loginId").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const msgEl = document.getElementById("msg");
+
+        if (!id || !password) {
+          msgEl.innerText = "Please enter ID and password";
+          msgEl.style.color = "red";
+          return;
+        }
+
+        try {
+          console.log(`Attempting login as ${role} with ID: ${id}`);
+          
+          let q;
+
+          if (role === "student") {
+            q = query(collection(db, "users"), where("studentId", "==", id));
+          } else {
+            q = query(collection(db, "users"), where("teacherId", "==", id));
+          }
+
+          const snap = await getDocs(q);
+          console.log(`Query returned ${snap.size} documents`);
+
+          if (snap.empty) {
+            msgEl.innerText = `${role.charAt(0).toUpperCase() + role.slice(1)} ID not found`;
+            msgEl.style.color = "red";
+            return;
+          }
+
+          const userData = snap.docs[0].data();
+          const email = userData.email;
+          console.log(`Found user with email: ${email}`);
+
+          await signInWithEmailAndPassword(auth, email, password);
+          console.log("Authentication successful");
+
+          msgEl.innerText = "Login successfully!";
+          msgEl.style.color = "lightgreen";
+
+          /* 🔥 SEND LOGIN EMAIL */
+          emailjs.send("service_nvnlj5d", "template_yc6g4ww", {
+            user_email: email,
+            action: "Login completed",
+          });
+
+          /* 🔥 REDIRECT TO HOME PAGE */
+          setTimeout(() => {
+            window.location.href = "../home.html";
+          }, 1000);
+        } catch (err) {
+          console.error("Login error:", err);
+          msgEl.innerText = err.message || "Login failed. Check console for details.";
+          msgEl.style.color = "red";
+        }
+      });
+    </script>
   </body>
 </html>

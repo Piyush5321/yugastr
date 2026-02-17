@@ -1,12 +1,17 @@
 body {
-  background: #0f172a;
+  background: #ffffff;
   font-family: Arial;
-  color: white;
+  color: #111827;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+body.dark-theme {
+  background: #1a1a1a;
+  color: #e0e0e0;
 }
 
 .content-wrapper {
@@ -63,7 +68,7 @@ body {
   padding: 8px 18px;
   border: none;
   border-radius: 8px;
-  background: #eef2ff;
+  background: #e0f2ff;
   color: #2c3e50;
   font-weight: 500;
   cursor: pointer;
@@ -71,15 +76,71 @@ body {
 }
 
 .logout-btn:hover {
-  background: #dbe4ff;
+  background: #c7e9ff;
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: #e0e0e0;
+}
+
+.theme-toggle span {
+  font-size: 18px;
+}
+
+body.dark-theme .main-navbar {
+  background: #1a1a1a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .brand {
+  color: #e0e0e0;
+}
+
+body.dark-theme .nav-link {
+  color: #b0b0b0;
+}
+
+body.dark-theme .nav-link:hover {
+  color: #7b9eff;
+}
+
+body.dark-theme .logout-btn {
+  background: #3d5cc4;
+  color: white;
+}
+
+body.dark-theme .logout-btn:hover {
+  background: #4e73df;
+}
+
+body.dark-theme .theme-toggle {
+  background: #2d2d2d;
+}
+
+body.dark-theme .theme-toggle:hover {
+  background: #3d3d3d;
 }
 
 
 .box {
-  background: #111827;
+  background: #ffffff;
   padding: 25px;
   border-radius: 10px;
   width: 320px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 input,
@@ -87,10 +148,10 @@ textarea {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: none;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
-  background: #1f2937;
-  color: white;
+  background: #ffffff;
+  color: #111827;
 }
 
 textarea {
@@ -100,10 +161,17 @@ textarea {
 button {
   width: 100%;
   padding: 10px;
-  background: #06b6d4;
+  background: #e0f2ff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  color: #111827;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #c7e9ff;
 }
 
 
@@ -111,9 +179,9 @@ button {
 .site-footer {
   margin-top: 60px;
   padding: 50px 40px 20px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(224, 242, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(79, 70, 229, 0.2);
   color: #222;
 }
 

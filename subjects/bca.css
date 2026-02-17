@@ -5,13 +5,13 @@
 }
 
 :root {
-  --bg: #f7f8fa;
+  --bg: #ffffff;
   --fg: #111827;
   --card: #ffffff;
   --card-fg: #111827;
   --primary: #3b5bdb;
   --primary-fg: #ffffff;
-  --secondary: #edf0f7;
+  --secondary: #e0f2ff;
   --secondary-fg: #1e293b;
   --muted: #94a3b8;
   --border: #e2e8f0;
@@ -21,6 +21,23 @@
   --danger-bg: #fee2e2;
   --radius: 10px;
   --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body.dark-theme {
+  --bg: #1a1a1a;
+  --fg: #e0e0e0;
+  --card: #2d2d2d;
+  --card-fg: #e0e0e0;
+  --primary: #5b7cff;
+  --primary-fg: #ffffff;
+  --secondary: #3d5cc4;
+  --secondary-fg: #e0e0e0;
+  --muted: #888888;
+  --border: #3d3d3d;
+  --success: #4ade80;
+  --success-bg: #1e3a1f;
+  --danger: #ff6b6b;
+  --danger-bg: #3a1f1f;
 }
 
 body {
@@ -80,6 +97,64 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c7e9ff;
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: #e0e0e0;
+}
+
+.theme-toggle span {
+  font-size: 18px;
+}
+
+body.dark-theme .main-navbar {
+  background: #1a1a1a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .brand {
+  color: #e0e0e0;
+}
+
+body.dark-theme .nav-link {
+  color: #b0b0b0;
+}
+
+body.dark-theme .nav-link:hover {
+  color: #7b9eff;
+}
+
+body.dark-theme .logout-btn {
+  background: #3d5cc4;
+  color: white;
+}
+
+body.dark-theme .logout-btn:hover {
+  background: #4e73df;
+}
+
+body.dark-theme .theme-toggle {
+  background: #2d2d2d;
+}
+
+body.dark-theme .theme-toggle:hover {
+  background: #3d3d3d;
 }
 
 .logout-btn:hover {
@@ -844,9 +919,9 @@ body {
 .site-footer {
   margin-top: 60px;
   padding: 50px 40px 20px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(224, 242, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(79, 70, 229, 0.2);
   color: #222;
 }
 

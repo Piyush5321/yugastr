@@ -8,25 +8,18 @@
     <div class="container">
       <h2>Signup</h2>
 
-      <!-- SLIDER -->
-      <div class="switch">
-        <div class="slider" id="slider"></div>
-        <span class="teacher-label" onclick="setRole('teacher')">Teacher</span>
-        <span class="student-label" onclick="setRole('student')">Student</span>
-      </div>
-
       <input id="name" placeholder="Name" />
       <input id="phone" placeholder="Phone" />
       <input id="email" placeholder="Email" />
 
       <!-- COURSE DROPDOWN -->
-      <select id="course" style="display: none">
+      <select id="course">
         <option value="">Select Course</option>
         <option value="BCA">BCA</option>
         <option value="MCA">MCA</option>
       </select>
 
-      <input id="uniqueId" placeholder="Enter Teacher ID" />
+      <input id="uniqueId" placeholder="Enter Student ID" />
       <input type="password" id="password" placeholder="Password" />
 
       <button id="createBtn">Create Account</button>
@@ -47,7 +40,81 @@
       })();
     </script>
 
-    <!-- signup script -->
-    <script type="module" src="signup.js"></script>
+    <!-- Firebase and signup script -->
+    <script type="module">
+      import { auth, db } from "./firebase.js";
+      import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      let role = "student";
+
+      window.setRole = (r) => {
+        role = r;
+        const idField = document.getElementById("uniqueId");
+        const courseBox = document.getElementById("course");
+
+        if (role === "student") {
+          idField.placeholder = "Enter Student ID";
+          courseBox.style.display = "block";
+        } else {
+          idField.placeholder = "Enter Teacher ID";
+          courseBox.style.display = "none";
+        }
+      };
+
+      document.getElementById("createBtn").addEventListener("click", async () => {
+        const name = document.getElementById("name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const id = document.getElementById("uniqueId").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const course = document.getElementById("course").value;
+
+        /* PHONE VALIDATION */
+        if (!/^[0-9]{10}$/.test(phone)) {
+          document.getElementById("msg").innerText = "Phone must be exactly 10 digits";
+          document.getElementById("msg").style.color = "red";
+          return;
+        }
+
+        /* COURSE VALIDATION */
+        if (role === "student" && course === "") {
+          document.getElementById("msg").innerText = "Please select course";
+          document.getElementById("msg").style.color = "red";
+          return;
+        }
+
+        try {
+          const user = await createUserWithEmailAndPassword(auth, email, password);
+          const uid = user.user.uid;
+
+          await setDoc(doc(db, "users", uid), {
+            name,
+            phone,
+            email,
+            role,
+            course: role === "student" ? course : "",
+            studentId: role === "student" ? id : "",
+            teacherId: role === "teacher" ? id : ""
+          });
+
+          document.getElementById("msg").innerText = "Signup successfully!";
+          document.getElementById("msg").style.color = "lightgreen";
+
+          emailjs.send("service_nvnlj5d", "template_yc6g4ww", {
+            user_email: email,
+            action: "Signup completed"
+          });
+
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1500);
+        } catch (err) {
+          console.error("Signup error:", err);
+          document.getElementById("msg").innerText = err.message;
+          document.getElementById("msg").style.color = "red";
+        }
+      });
+    </script>
   </body>
 </html>
