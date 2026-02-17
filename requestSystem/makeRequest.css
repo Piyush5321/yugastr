@@ -136,42 +136,103 @@ body.dark-theme .theme-toggle:hover {
 
 .box {
   background: #ffffff;
-  padding: 25px;
-  border-radius: 10px;
-  width: 320px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 450px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.box h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 input,
 textarea {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 12px 15px;
+  margin: 12px 0;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #ffffff;
   color: #111827;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4e73df;
+  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
 }
 
 textarea {
-  height: 100px;
+  height: 120px;
+  resize: vertical;
 }
 
-button {
+#sendBtn {
   width: 100%;
-  padding: 10px;
-  background: #e0f2ff;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  color: #111827;
-  font-weight: 500;
-  transition: background 0.3s;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
 }
 
-button:hover {
-  background: #c7e9ff;
+#sendBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+#sendBtn:active {
+  transform: translateY(0);
+}
+
+#msg {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+body.dark-theme .box {
+  background: #1a1a1a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .box h2 {
+  color: #e0e0e0;
+}
+
+body.dark-theme input,
+body.dark-theme textarea {
+  background: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #3d3d3d;
+}
+
+body.dark-theme input:focus,
+body.dark-theme textarea:focus {
+  border-color: #7b9eff;
+  box-shadow: 0 0 0 3px rgba(123, 158, 255, 0.1);
+}
+
+body.dark-theme #msg {
+  color: #e0e0e0;
 }
 
 
